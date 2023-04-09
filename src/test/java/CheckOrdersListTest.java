@@ -15,8 +15,8 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class CheckOrdersListTest {
-    ScooterOrderSteps scooterOrderSteps;
-    List<String> tracks;
+   private ScooterOrderSteps scooterOrderSteps;
+   private List<String> tracks;
 
     @Before
     public void setUp() {

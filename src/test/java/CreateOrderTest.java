@@ -14,16 +14,16 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
-    ScooterOrderSteps orderSteps;
+   private ScooterOrderSteps orderSteps;
 
-    String[] colors;
-    List<String> tracks;
+   private String[] colors;
+   private List<String> tracks;
 
     public CreateOrderTest(String[] colors) {
         this.colors = colors;
     }
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name="Цвет самоката: {0} {1}")
     public static Object[][] getScooterColor() {
         return new Object[][]{
                 {new String[]{"BLACK"}},

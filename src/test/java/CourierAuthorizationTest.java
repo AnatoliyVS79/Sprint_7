@@ -14,12 +14,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class CourierAuthorizationTest {
-    CourierClientSteps courierClient;
-    List<String> ids;
-    Courier courier;
-    String login;
-    String password;
-    String firstName;
+   private CourierClientSteps courierClient;
+   private List<String> ids;
+   private Courier courier;
+   private String login;
+   private String password;
+   private String firstName;
 
 
     @Before
@@ -69,9 +69,9 @@ public class CourierAuthorizationTest {
     public void authorizationCourierWithoutLoginTest() {
         CourierCreds courierCredentials = new CourierCreds("", password);
         courierClient.loginCourier(courierCredentials)
-                .assertThat().body("message", equalTo("Недостаточно данных для входа"))
+                .statusCode(400)
                 .and()
-                .statusCode(400);
+                .assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }
 
 
@@ -81,9 +81,9 @@ public class CourierAuthorizationTest {
     public void authorizationCourierWithoutPasswordTest() {
         CourierCreds courierCredentials = new CourierCreds(login, "");
         courierClient.loginCourier(courierCredentials)
-                .assertThat().body("message", equalTo("Недостаточно данных для входа"))
+                .statusCode(400)
                 .and()
-                .statusCode(400);
+                .assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Test
@@ -93,9 +93,9 @@ public class CourierAuthorizationTest {
         String invalidLogin = "Grozniy";
         CourierCreds courierCredentials = new CourierCreds(invalidLogin, password);
         courierClient.loginCourier(courierCredentials)
-                .assertThat().body("message", equalTo("Учетная запись не найдена"))
+                .statusCode(404)
                 .and()
-                .statusCode(404);
+                .assertThat().body("message", equalTo("Учетная запись не найдена"));
     }
 
     @Test
@@ -105,9 +105,9 @@ public class CourierAuthorizationTest {
         String invalidPassword = "qwerty";
         CourierCreds courierCredentials = new CourierCreds(login, invalidPassword);
         courierClient.loginCourier(courierCredentials)
-                .assertThat().body("message", equalTo("Учетная запись не найдена"))
+                .statusCode(404)
                 .and()
-                .statusCode(404);
+                .assertThat().body("message", equalTo("Учетная запись не найдена"));
     }
 
     @Test

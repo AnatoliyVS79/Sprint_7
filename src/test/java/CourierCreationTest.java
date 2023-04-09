@@ -16,9 +16,9 @@ import static org.junit.Assert.assertEquals;
 
 public class CourierCreationTest {
 
-    List<String> ids;
-    private CourierClientSteps courierClient;
-    private Courier courier;
+   private List<String> ids;
+   private CourierClientSteps courierClient;
+   private Courier courier;
 
 
     @Before
@@ -36,15 +36,15 @@ public class CourierCreationTest {
         }
     }
 
-
     @Test
     @DisplayName("Авторизация курьера")
     @Description("Проверяем, что после авторизации возвращается код 200")
     public void createCourierTest() {
         ValidatableResponse response = courierClient.registerNewCourier(courier);
-        response.assertThat().body("ok", equalTo(true))
+        response.assertThat()
+                .statusCode(201)
                 .and()
-                .statusCode(201);
+                .body("ok", equalTo(true));
 
         CourierCreds courierCredentials = CourierCreds.from(courier);
         String courierId = courierClient.loginCourier(courierCredentials)
@@ -111,9 +111,10 @@ public class CourierCreationTest {
     public void testRegisterCourierWithoutLoginReturn400BadRequest() {
         Courier courier = new Courier(null, "ioan7", "Ioan");
         ValidatableResponse response = courierClient.registerNewCourier(courier);
-        response.assertThat().body("message", equalTo("Недостаточно данных для создания учетной записи"))
+        response.assertThat()
+                .statusCode(400)
                 .and()
-                .statusCode(400);
+                .body("message", equalTo("Недостаточно данных для создания учетной записи"));
     }
 
     @Test
@@ -136,11 +137,7 @@ public class CourierCreationTest {
                 .body()
                 .path("id").toString();
         ids.add(courierId);
-
-
     }
-
-
 }
 
 
