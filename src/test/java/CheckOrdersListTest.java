@@ -36,14 +36,6 @@ public class CheckOrdersListTest {
     @Description("Проверяем, что в тело возвращается список заказов и статус код 200")
     public void testGetOrdersList() {
         ValidatableResponse newOrderResponse = scooterOrderSteps.createNewOrder(CreateOrderModel.getRandom());
-
-        scooterOrderSteps.getOrdersList()
-                .assertThat().statusCode(200)
-                .and()
-                .body("orders.isEmpty()", Matchers.is(false))
-                .and()
-                .body("orders", notNullValue());
-
         String track = newOrderResponse
                 .assertThat().statusCode(201)
                 .extract()
@@ -51,5 +43,12 @@ public class CheckOrdersListTest {
                 .path("track").toString();
 
         tracks.add(track);
-    }
+
+        scooterOrderSteps.getOrdersList()
+                .assertThat().statusCode(200)
+                .and()
+                .body("orders.isEmpty()", Matchers.is(false))
+                .and()
+                .body("orders", notNullValue());
+        }
 }
